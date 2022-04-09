@@ -1,5 +1,7 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "Stack.h"
 
 charNode* addToHead(charNode* head, charNode* toAdd);
@@ -59,7 +61,46 @@ int isEmptyStack(const Stack* s)
 
 void flipBetweenHashes(const char* sentence)
 {
-	// add your code here
+	// In case string is empty
+	if (!sentence)
+	{
+		printf("No sentence detected, String must not be empty!\n");
+		return;
+	}
+
+	// In case string is not empty
+	Stack Temp; // Create auxiliary stack
+	initStack(&Temp); // Init stack
+	int size = strlen(sentence);
+	char* resSentence = (char*)calloc(size, sizeof(char) + 1); // Init string for result
+	if (!resSentence)
+	{
+		printf("Memory allocation failed!\n");
+		exit(0);
+	}
+	char* ptr2sentence = sentence; // Pointer to read from string
+	char* ptr2res = resSentence; // Pointer to write to result
+	while (*ptr2sentence != '\0') // Read from string
+	{
+		if (*ptr2sentence == '#') // Reached the char '#'
+		{
+			ptr2sentence++;
+			while (*ptr2sentence != '#') 
+			{ // Until reaches next '#', push each char to stack
+				push(&Temp, *ptr2sentence);
+				ptr2sentence++;
+			}
+			while (!isEmptyStack(&Temp))
+			{ // Until stack is empty, pop each char to result string
+				*ptr2res++ = pop(&Temp);
+			}
+			ptr2sentence++;
+		}
+		strncpy(ptr2res++, ptr2sentence++, sizeof(char)); // Copy string to result, char by char
+	}
+	printf("The new string is:\n%s\n", resSentence);
+	free(resSentence); // Free result string
+	destroyStack(&Temp); // Delete auxiliary stack
 }
 
 int isPalindrome(Stack* s)
