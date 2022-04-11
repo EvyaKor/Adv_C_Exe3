@@ -6,7 +6,7 @@
 
 charNode* addToHead(charNode* head, charNode* toAdd);
 void removeItem(charNode** head);
-void printList(charNode* head);
+void printList_Stack(charNode* head);
 int howManyInStack(Stack* s);
 
 
@@ -34,7 +34,7 @@ void push(Stack* s, char data)
 	if (!newitem)
 	{
 		printf("push: Memory allocation failed\n");
-		return;
+		exit(0);
 	}
 	newitem->data = data;
 	s->head = addToHead(s->head, newitem); // Recall private function 
@@ -225,7 +225,7 @@ void removeItem(charNode** head)
 }
 
 // Prints Linked List
-void printList(charNode* head)
+void printList_Stack(charNode* head)
 {
 	charNode* temp;
 	temp = head;
@@ -236,6 +236,7 @@ void printList(charNode* head)
 	}
 }
 
+// Counts how many in stack
 int howManyInStack(Stack* s)
 {
 	int counter = 0;
