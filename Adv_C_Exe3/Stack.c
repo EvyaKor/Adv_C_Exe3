@@ -7,6 +7,7 @@
 charNode* addToHead(charNode* head, charNode* toAdd);
 void removeItem(charNode** head);
 void printList(charNode* head);
+int howManyInStack(Stack* s);
 
 
 /***************** Stack ADT Implementation *****************/
@@ -105,12 +106,102 @@ void flipBetweenHashes(const char* sentence)
 
 int isPalindrome(Stack* s)
 {
-	// add your code here
+	// In case stack does not exist
+	if (s == NULL)
+	{
+		printf("Uninitialized stack!\n");
+		return 0;
+	}
+
+	// In case stack is empty
+	if (isEmptyStack(s))
+	{
+		return 1;
+	}
+	
+	// In case stack is not empty
+	Stack Temp; // Create auxiliary stack
+	initStack(&Temp); // Init stack
+	int midsize = howManyInStack(s) / 2; // Get the size of half the stack
+	charNode* ptr1 = s->head; // pointer to read from stack
+	charNode* ptr2; // pointer to read from auxiliary stack
+	while (ptr1 != NULL)
+	{
+		push(&Temp, ptr1->data); // Copy stack to auxiliary stack in reverse
+		ptr1 = ptr1->next;
+	}
+	ptr1 = s->head;
+	ptr2 = Temp.head;
+	for (int i = 0; i < midsize; i++) // Loop to check palindrom, works for both odd and even size options
+	{
+		if (ptr1->data != ptr2->data)
+		{
+			return 0;
+		}
+		ptr1 = ptr1->next;
+		ptr2 = ptr2->next;
+	}
+	destroyStack(&Temp); // Delete auxiliary stack
+	return 1;
 }
 
 void rotateStack(Stack* s, int n)
 {
-	// add your code here
+	// In case stack does not exist
+	if (s == NULL)
+	{
+		printf("Uninitialized stack!\n");
+		return;
+	}
+
+	// In case stack is empty
+	if (isEmptyStack(s))
+	{
+		return;
+	}
+
+	// In case n is negative
+	if (n < 0)
+	{
+		return;
+	}
+
+	// In case n is bigger than stack size
+	int size = howManyInStack(s);
+	if (n > size) 
+	{
+		return;
+	}
+
+	// In case stack is not empty and n is valid
+	Stack Temp1; // Create auxiliary stack 1
+	initStack(&Temp1); // Init stack 1
+	Stack Temp2; // Create auxiliary stack 2
+	initStack(&Temp2); // Init stack 2
+	char tempchar;
+	for (int i = 0; i < (size - n); i++) // pop size-n items from stack and push to Temp1
+	{
+		tempchar = pop(s);
+		push(&Temp1, tempchar);
+	}
+	while (s->head != NULL) // pop the rest of the items from stack and push to Temp2
+	{
+		tempchar = pop(s);
+		push(&Temp2, tempchar);
+	}
+	// now stack is empty
+	while (Temp1.head != NULL) // pop all items from Temp1 and push back to stack
+	{
+		tempchar = pop(&Temp1);
+		push(s, tempchar);
+	}
+	while (Temp2.head != NULL) // pop all items from Temp1 and push back to stack
+	{
+		tempchar = pop(&Temp2);
+		push(s, tempchar);
+	}
+	destroyStack(&Temp1); // Delete auxiliary stack 1
+	destroyStack(&Temp2); // Delete auxiliary stack 2
 }
 
 
@@ -143,5 +234,18 @@ void printList(charNode* head)
 		printf("%c\n", temp->data);
 		temp = temp->next;
 	}
+}
+
+int howManyInStack(Stack* s)
+{
+	int counter = 0;
+	charNode* temp;
+	temp = s->head;
+	while (temp != NULL)
+	{
+		counter++;
+		temp = temp->next;
+	}
+	return counter;
 }
 
