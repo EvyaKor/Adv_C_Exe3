@@ -4,12 +4,6 @@
 #include <string.h>
 #include "Stack.h"
 
-charNode* addToHead(charNode* head, charNode* toAdd);
-void removeItem(charNode** head);
-void printList_Stack(charNode* head);
-int howManyInStack(Stack* s);
-
-
 /***************** Stack ADT Implementation *****************/
 
 void initStack(Stack* s)

@@ -114,4 +114,13 @@ void main()
 	cutAndReplace(&Test2);
 	printList_Queue(Test2.head);
 	printf("\n===================================================\n");
+	
+	// Testing sortKidsFirst
+	printf("\n==============Testing sortKidsFirst (includes minValueIndex + moveIndexToHead)==============\n");
+	printf("\n----1st test(In case queue does not exist)----\n");
+	sortKidsFirst(NULL); //In case queue does not exist
+	printf("\n----next test(Check if sortKidsFirst worked)----\n");
+	sortKidsFirst(&Test2);
+	printList_Queue(Test2.head);
+	printf("\n===================================================\n");
 }

@@ -4,9 +4,6 @@
 #include <string.h>
 #include "Queue.h"
 
-void printList_Queue(intNode* head);
-int howManyInQueue(Queue* q);
-
 /***************** Queue ADT Implementation *****************/
 
 void initQueue(Queue* q)
@@ -93,7 +90,7 @@ void rotateQueue(Queue* q)
 	Queue Temp; // Create auxiliary queue
 	initQueue(&Temp); // Init queue
 	unsigned int num;
-	while (q->head != q->tail) //dequeue all itmes besides the last item(tail) from queue and enqueue to Temp
+	while (q->head != q->tail) //dequeue all items besides the last item(tail) from queue and enqueue to Temp
 	{
 		num = dequeue(q);
 		enqueue(&Temp, num);
@@ -160,7 +157,36 @@ void cutAndReplace(Queue* q)
 
 void sortKidsFirst(Queue* q)
 {
-	// add your code here
+	// In case queue does not exist
+	if (q == NULL)
+	{
+		printf("Uninitialized queue!\n");
+		return NULL;
+	}
+	// In case queue is empty
+	if (isEmptyQueue(q))
+	{
+		return NULL;
+	}
+
+	unsigned int num = 0;
+	Queue Temp; // Create auxiliary queue
+	initQueue(&Temp); // Init queue
+	intNode* temp_read = q->head; // pointer to read from queue
+	while (q->head != NULL) //dequeue all itmes from queue and enqueue to Temp
+	{
+		num = dequeue(q);
+		enqueue(&Temp, num);
+	}
+
+	intNode* index; // pointer to hold minimum value index
+	while (!isEmptyQueue(&Temp))
+	{
+		index = minValueIndex(&Temp); // get minimum value index
+		moveIndexToHead(&Temp, index); // move it to head of Temp
+		num = dequeue(&Temp); // dequeue from Temp and enqueue back to q
+		enqueue(q, num);
+	}
 }
 
 
@@ -191,3 +217,56 @@ int howManyInQueue(Queue* q)
 	}
 	return counter;
 }
+
+// Finds the index of the min value in queue
+intNode* minValueIndex(Queue* q)
+{
+	// In case queue does not exist
+	if (q == NULL)
+	{
+		printf("Uninitialized queue!\n");
+		return NULL;
+	}
+	// In case queue is empty
+	if (isEmptyQueue(q))
+	{
+		return NULL;
+	}
+	intNode* ptr_read = q->head; // pointer to read from queue
+	intNode* ptr_min = q->head; // pointer to hold min value index
+	unsigned int min = 4294967295; // maximum unsigned integer possible
+	while (ptr_read != NULL)
+	{
+		if (ptr_min->data > ptr_read->data)
+		{
+			ptr_min = ptr_read;
+		}
+		ptr_read = ptr_read->next;
+	}
+	// now ptr_min points to the smallest number in the queue
+	return ptr_min;
+}
+
+// Moves given index to head of queue
+void moveIndexToHead(Queue* q, intNode* index)
+{
+	// In case queue does not exist
+	if (q == NULL)
+	{
+		printf("Uninitialized queue!\n");
+		return;
+	}
+	// In case queue is empty
+	if (isEmptyQueue(q))
+	{
+		return;
+	}
+	intNode* ptr = q->head; // pointer to read from queue
+	while ((ptr != NULL) && (ptr != index)) // moves head of queue to tail until reaches index
+	{
+		int num = dequeue(q);
+		enqueue(q, num); 
+		ptr = q->head;
+	}
+}
+

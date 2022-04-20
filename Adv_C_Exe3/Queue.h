@@ -89,3 +89,9 @@ void cutAndReplace(Queue* q);
 /// </summary>
 /// <param name="s"></param>
 void sortKidsFirst(Queue* q);
+
+
+void printList_Queue(intNode* head);
+int howManyInQueue(Queue* q);
+intNode* minValueIndex(Queue* q);
+void moveIndexToHead(Queue* q, intNode* index);
