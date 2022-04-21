@@ -100,7 +100,7 @@ void rotateQueue(Queue* q)
 		num = dequeue(&Temp);
 		enqueue(q, num);
 	}
-	destroyQueue(&Temp);
+	destroyQueue(&Temp); // Delete auxiliary queue
 }
 
 void cutAndReplace(Queue* q)
@@ -153,6 +153,7 @@ void cutAndReplace(Queue* q)
 		num = dequeue(&Temp);
 		enqueue(q, num);
 	}
+	destroyQueue(&Temp); // Delete auxiliary queue
 }
 
 void sortKidsFirst(Queue* q)
@@ -187,6 +188,7 @@ void sortKidsFirst(Queue* q)
 		num = dequeue(&Temp); // dequeue from Temp and enqueue back to q
 		enqueue(q, num);
 	}
+	destroyQueue(&Temp); // Delete auxiliary queue
 }
 
 
